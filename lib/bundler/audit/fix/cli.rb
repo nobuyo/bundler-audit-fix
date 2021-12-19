@@ -18,6 +18,7 @@
 #
 
 require 'thor'
+require 'bundler/cli/update'
 require 'bundler/audit/cli'
 require 'bundler/audit/database'
 
@@ -69,7 +70,7 @@ module Bundler
             gemfile      = options[:gemfile_lock].sub(/\.lock$/, '')
             gemfile_path = File.join(dir, gemfile)
 
-            run "bundle update #{gems_to_update.join(" ")} --gemfile=#{gemfile_path}"
+            Bundler::CLI::Update.new({ gemfile: gemfile_path }, gems_to_update).run
           rescue Bundler::GemfileNotFound, Bundler::GemfileLockNotFound => e
             say e.message, :red
             exit 1
