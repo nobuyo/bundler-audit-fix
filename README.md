@@ -21,8 +21,6 @@ Or install it yourself as:
 ## Usage
 
 ```sh
-# First, run bundle-audit and update advisory database.
-$ bundle-audit check --update
 $ bundle-audit-fix update [dir]
 ```
 

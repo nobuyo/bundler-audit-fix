@@ -34,10 +34,11 @@ module Bundler
         map '--version' => :version
 
         desc 'check [DIR]', 'Checks the Gemfile.lock for insecure dependencies'
-        method_option :ignore,       type: :array,  aliases: '-i'
-        method_option :database,     type: :string, aliases: '-D', default: Database::USER_PATH
-        method_option :config,       type: :string, aliases: '-c', default: '.bundler-audit.yml'
-        method_option :gemfile_lock, type: :string, aliases: '-G', default: 'Gemfile.lock'
+        method_option :ignore,       type: :array,   aliases: '-i'
+        method_option :update,       type: :boolean, aliases: '-u'
+        method_option :database,     type: :string,  aliases: '-D', default: Database::USER_PATH
+        method_option :config,       type: :string,  aliases: '-c', default: '.bundler-audit.yml'
+        method_option :gemfile_lock, type: :string,  aliases: '-G', default: 'Gemfile.lock'
 
         def update(dir = Dir.pwd)
           unless File.directory?(dir)
@@ -45,9 +46,10 @@ module Bundler
             exit 1
           end
 
-          unless Database.exists?(options[:database])
-            say_error 'No database is found', :red
-            exit 1
+          if !Database.exists?(options[:database])
+            Bundler::Audit::CLI.new.invoke(:download, options[:database])
+          elsif options[:update]
+            Bundler::Audit::CLI.new.invoke(:update, options[:database])
           end
 
           database = Database.new(options[:database])
