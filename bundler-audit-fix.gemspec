@@ -19,10 +19,9 @@ Gem::Specification.new do |spec|
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features)/}) }
   end
   spec.bindir        = 'bin'
-  spec.executables   = spec.files.grep(%r{\Abin/}) { |f| File.basename(f) }
+  spec.executables   = spec.files.grep(%r{\Abin/bundler}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  # Uncomment to register a new dependency of your gem
   spec.add_dependency 'bundler', '>= 1.2.0', '< 3'
   spec.add_dependency 'bundler-audit', '~> 0.9.0'
   spec.add_dependency 'thor', '~> 1.0'
