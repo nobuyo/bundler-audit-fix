@@ -1,12 +1,14 @@
 AllCops:
   TargetRubyVersion: 2.5
+  Exclude:
+    - 'spec/fixtures/database/**/*'
 
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes
 Style/FrozenStringLiteralComment:
   Exclude:
-    - bin/*
+    - 'bin/*'
 Style/StringLiteralsInInterpolation:
   Enabled: true
   EnforcedStyle: double_quotes

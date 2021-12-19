@@ -15,7 +15,7 @@ RSpec.describe Bundler::Audit::Fix::Patcher do
     described_class.new(directory, scanner.report)
   end
 
-  describe "#patch" do
+  describe '#patch' do
     it 'should return results' do
       result = subject.patch
 
@@ -23,7 +23,7 @@ RSpec.describe Bundler::Audit::Fix::Patcher do
     end
 
     it 'should rewrite Gemfile' do
-      result = subject.patch
+      subject.patch
 
       original_gemfile = File.read(File.join(directory, 'Gemfile.bak'))
       patched_gemfile  = File.read(File.join(directory, 'Gemfile'))
@@ -51,7 +51,7 @@ RSpec.describe Bundler::Audit::Fix::Patcher do
       end
 
       it 'should rewrite Gemfile' do
-        result = subject.patch
+        subject.patch
 
         original_gemfile = File.read(File.join(directory, 'Gemfile.bak'))
         patched_gemfile  = File.read(File.join(directory, 'Gemfile'))

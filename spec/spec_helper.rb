@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'English'
 require 'fileutils'
 require 'rspec'
 require 'bundler/audit/database'
@@ -7,8 +8,8 @@ require 'bundler/audit/fix'
 
 # https://github.com/rubysec/bundler-audit/blob/f64883a878d172722164495668ff205c21eb55c3/spec/spec_helper.rb
 module Fixtures
-  ROOT    = File.expand_path('../fixtures', __FILE__)
-  TMP_DIR = File.expand_path('../tmp', __FILE__)
+  ROOT    = File.expand_path('fixtures', __dir__)
+  TMP_DIR = File.expand_path('tmp', __dir__)
 
   module Database
     PATH = File.join(ROOT, 'database')
@@ -19,7 +20,7 @@ module Fixtures
       system 'git', 'clone', '--quiet', Bundler::Audit::Database::URL, PATH
     end
 
-    def self.reset!(commit=COMMIT)
+    def self.reset!(commit = COMMIT)
       Dir.chdir(PATH) do
         system 'git', 'reset', '--hard', commit
       end
@@ -32,18 +33,16 @@ module Fixtures
 end
 
 module Helpers
-  def sh(command, options={})
+  def sh(command, options = {})
     result = `#{command} 2>&1`
 
-    if $?.success? == !!options[:fail]
-      raise "FAILED #{command}\n#{result}"
-    end
+    raise "FAILED #{command}\n#{result}" if $CHILD_STATUS.success? == !options[:fail].nil?
 
     result
   end
 
   def decolorize(string)
-    string.gsub(/\e\[\d+m/, "")
+    string.gsub(/\e\[\d+m/, '')
   end
 end
 
@@ -53,9 +52,7 @@ RSpec.configure do |config|
   include Helpers
 
   config.before(:suite) do
-    unless File.directory?(Fixtures::Database::PATH)
-      Fixtures::Database.clone
-    end
+    Fixtures::Database.clone unless File.directory?(Fixtures::Database::PATH)
 
     Fixtures::Database.reset!
 
@@ -63,7 +60,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    stub_const("Bundler::Audit::Database::DEFAULT_PATH", Fixtures::Database::PATH)
+    stub_const('Bundler::Audit::Database::DEFAULT_PATH', Fixtures::Database::PATH)
     %w[Gemfile Gemfile.lock].each do |f|
       FileUtils.copy_file(File.join(directory, f), File.join(directory, "#{f}.bak"))
     end
