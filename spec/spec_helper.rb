@@ -46,10 +46,9 @@ module Helpers
   end
 end
 
-include Bundler::Audit
-
 RSpec.configure do |config|
   include Helpers
+  include Bundler::Audit
 
   config.before(:suite) do
     Fixtures::Database.clone unless File.directory?(Fixtures::Database::PATH)
