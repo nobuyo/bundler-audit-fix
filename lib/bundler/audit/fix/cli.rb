@@ -18,6 +18,7 @@
 #
 
 require 'thor'
+require 'bundler'
 require 'bundler/cli'
 require 'bundler/cli/update'
 require 'bundler/audit/cli'

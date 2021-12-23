@@ -3,7 +3,6 @@
 require 'English'
 require 'fileutils'
 require 'rspec'
-require 'bundler/cli'
 require 'bundler/audit/database'
 require 'bundler/audit/fix'
 
