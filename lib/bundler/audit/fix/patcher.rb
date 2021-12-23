@@ -71,7 +71,7 @@ module Bundler
         #
         def patch
           patterns, gems_to_update = build_patterns
-          gemfile = File.read(gemfile_path)
+          gemfile = File.read(gemfile_path, encoding: 'utf-8')
 
           patterns.each do |pattern, replace_with|
             gemfile = gemfile.gsub(pattern, replace_with)

@@ -55,6 +55,12 @@ module Bundler
             Bundler::Audit::CLI.new.invoke(:update, options[:database])
           end
 
+          gemfile      = options[:gemfile_lock].sub(/\.lock$/, '')
+          gemfile_path = File.join(dir, gemfile)
+
+          # for https://github.com/rubygems/bundler/blob/35be6d9a603084f719fec4f4028c18860def07f6/lib/bundler/shared_helpers.rb#L229
+          ENV['BUNDLE_GEMFILE'] = gemfile_path
+
           database = Database.new(options[:database])
           begin
             scanner = Scanner.new(dir, options[:gemfile_lock], database, options[:config])
@@ -68,9 +74,6 @@ module Bundler
 
             patcher = Patcher.new(dir, report, options[:gemfile_lock], options[:config])
             gems_to_update = patcher.patch
-
-            gemfile      = options[:gemfile_lock].sub(/\.lock$/, '')
-            gemfile_path = File.join(dir, gemfile)
 
             Bundler::CLI::Update.new({ gemfile: gemfile_path }, gems_to_update).run
           rescue Bundler::GemfileNotFound, Bundler::GemfileLockNotFound => e
