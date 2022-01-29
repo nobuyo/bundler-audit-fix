@@ -81,7 +81,8 @@ module Bundler
             updated_lockfile = StringIO.new(File.read(options[:gemfile_lock]))
 
             if FileUtils.compare_stream(current_lockfile, updated_lockfile)
-              say 'All of the targets are staying in the same version for dependency reasons. Please resolve them manually.',
+              say 'All of the targets are staying in the same version for dependency reasons. \
+                  Please resolve them manually.',
                   :yellow
               exit 1
             end
