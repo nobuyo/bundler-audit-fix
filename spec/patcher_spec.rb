@@ -41,7 +41,7 @@ RSpec.describe Bundler::Audit::Fix::Patcher do
       end
     end
 
-    context 'when exec on secure bundle' do
+    context 'when exec on unpatched bundle' do
       let(:bundle) { 'unpatched_gems_with_replacement' }
 
       it 'should return empty results' do
