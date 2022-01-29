@@ -26,7 +26,7 @@ $ bundle-audit-fix update [dir]
 
 ### .bundler-audit.yml
 
-In addition to the original configuration, it supports `replacement` block.  If a gem that is related to a fixed version and not directly listed in the Gemfile (i.g. Rails family, etc.) needs to be updated, bundle-audit-fix will replace according to the specified like below.
+In addition to the original configuration, it supports `replacement` block.  If a gem that is related to a fixed version and not directly listed in the Gemfile (e.g. Rails family, etc.) needs to be updated, bundle-audit-fix will replace according to the specified like below.
 
 ```yml
 replacement:
