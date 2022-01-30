@@ -1,5 +1,7 @@
 # Bundler::Audit::Fix
 
+[![Gem Version](https://badge.fury.io/rb/bundler-audit-fix.svg)](https://badge.fury.io/rb/bundler-audit-fix)
+
 Automatically apply patched version of gems audited by [rubysec/bunder-audit](https://github.com/rubysec/bundler-audit).
 
 ## Installation
@@ -26,7 +28,7 @@ $ bundle-audit-fix update [dir]
 
 ### .bundler-audit.yml
 
-In addition to the original configuration, it supports `replacement` block.  If a gem that is related to a fixed version and not directly listed in the Gemfile (e.g. Rails family, etc.) needs to be updated, bundle-audit-fix will replace according to the specified like below.
+In addition to the original configuration, it supports `replacement` block. If a gem that is related to a fixed and same version and not directly listed in the Gemfile (e.g. Rails family) needs to be updated, bundle-audit-fix will replace according to the specified like below.
 
 ```yml
 replacement:
