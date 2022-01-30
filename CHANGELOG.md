@@ -1,3 +1,7 @@
+# 0.2.1 - 2022-01-30
+
+- Fix bug that the CLI returns non-zero status code even on bundle update succeeded.
+
 # 0.2.0 - 2022-01-29
 
 - Exit with non-zero status code when `bundle-audit-fix` has no effect for dependency reasons.
