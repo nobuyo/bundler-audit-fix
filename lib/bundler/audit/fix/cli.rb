@@ -76,18 +76,11 @@ module Bundler
             patcher = Patcher.new(dir, report, options[:gemfile_lock], options[:config])
             gems_to_update = patcher.patch
 
-            current_lockfile = StringIO.new(File.read(options[:gemfile_lock]))
             Bundler::CLI::Update.new({ gemfile: gemfile_path }, gems_to_update).run
-            updated_lockfile = StringIO.new(File.read(options[:gemfile_lock]))
-
-            if FileUtils.compare_stream(current_lockfile, updated_lockfile)
-              say 'All of the targets are staying in the same version for dependency reasons. \
-                  Please resolve them manually.',
-                  :yellow
-              exit 1
-            end
 
             exit 0
+          rescue Bundler::GemNotFound => e
+            exit e.status_code
           rescue Bundler::GemfileNotFound, Bundler::GemfileLockNotFound => e
             say e.message, :red
             exit 1
