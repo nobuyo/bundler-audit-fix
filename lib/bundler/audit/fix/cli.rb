@@ -23,7 +23,6 @@ require 'bundler/cli'
 require 'bundler/cli/update'
 require 'bundler/audit/cli'
 require 'bundler/audit/database'
-require 'fileutils'
 
 module Bundler
   module Audit
@@ -77,10 +76,6 @@ module Bundler
             gems_to_update = patcher.patch
 
             Bundler::CLI::Update.new({ gemfile: gemfile_path }, gems_to_update).run
-
-            exit 0
-          rescue Bundler::GemNotFound => e
-            exit e.status_code
           rescue Bundler::GemfileNotFound, Bundler::GemfileLockNotFound => e
             say e.message, :red
             exit 1

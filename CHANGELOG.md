@@ -1,6 +1,6 @@
 # 0.2.1 - 2022-01-30
 
-- Fix bug that the CLI returns non-zero status code even on bundle update succeeded.
+- Fix bug for 0.2.0 (revert)
 
 # 0.2.0 - 2022-01-29
 
