@@ -29,34 +29,60 @@ module Bundler
       class Configuration < Configuration
         attr_accessor :replacements
 
-        def self.load(file_path)
-          instance = super(file_path)
+        class << self
+          def load(file_path)
+            instance = super(file_path)
 
-          doc = YAML.parse(File.new(file_path))
+            doc = YAML.parse(File.new(file_path))
+            doc.root.children.each_slice(2) do |key, value|
+              case key.value
+              when 'replacement'
+                unless value.children.is_a?(Array)
+                  raise(InvalidConfigurationError, "'replacement' key found in config file, but is not an Array")
+                end
+
+                instance.replacements ||= {}
+                instance.replacements = instance.replacements.merge(build_replacements(value))
+              end
+            end
+
+            instance
+          end
+
+          def build_replacements(params)
+            params.children.each_slice(2).map do |key, value|
+              unless value.children
+                raise(InvalidConfigurationError,
+                      "'replacement.#{key.value}' in config file is empty")
+              end
+
+              unless value.children.all? { |node| node.is_a?(YAML::Nodes::Scalar) }
+                raise(InvalidConfigurationError,
+                      "'replacement.#{key.value}' array in config file contains a non-String")
+              end
+
+              { key.value => value.children.map(&:value) }
+            end.inject(&:merge)
+          end
+        end
+
+        def initialize(config = {})
+          super(config)
+          load_default
+        end
+
+        private
+
+        def load_default
+          base_dir = File.realpath(File.join(File.dirname(__FILE__), '..', '..', '..', '..'))
+          default_config_path = File.join(base_dir, 'config', 'default.yml')
+          doc = YAML.parse(File.new(default_config_path))
           doc.root.children.each_slice(2) do |key, value|
             case key.value
             when 'replacement'
-              unless value.children.is_a?(Array)
-                raise(InvalidConfigurationError, "'replacement' key found in config file, but is not an Array")
-              end
-
-              instance.replacements = build_replacements(value)
+              self.replacements = self.class.build_replacements(value)
             end
           end
-
-          instance
-        end
-
-        def self.build_replacements(params)
-          params.children.each_slice(2).map do |key, value|
-            raise(InvalidConfigurationError, "'replacement.#{key.value}' in config file is empty") unless value.children
-
-            unless value.children.all? { |node| node.is_a?(YAML::Nodes::Scalar) }
-              raise(InvalidConfigurationError, "'replacement.#{key.value}' array in config file contains a non-String")
-            end
-
-            { key.value => value.children.map(&:value) }
-          end.inject(&:merge)
         end
       end
     end

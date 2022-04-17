@@ -1,14 +1,3 @@
 replacement:
   rails:
-    - actionpack
-    - actionview
-    - activemodel
-    - activerecord
-    - actionmailer
-    - activejob
-    - actioncable
-    - activestorage
-    - activesupport
-    - actionmailbox
-    - actiontext
-    - railties
+    - foo

@@ -41,10 +41,23 @@ RSpec.describe Bundler::Audit::Fix::Patcher do
       end
     end
 
-    context 'when exec on unpatched bundle' do
+    context 'when exec on unpatched bundle with overwrite default replacements' do
       let(:bundle) { 'unpatched_gems_with_replacement' }
 
-      it 'should return empty results' do
+      it 'should rewrite Gemfile' do
+        subject.patch
+
+        original_gemfile = File.read(File.join(directory, 'Gemfile.bak'))
+        patched_gemfile  = File.read(File.join(directory, 'Gemfile'))
+
+        expect(patched_gemfile).to eq original_gemfile
+      end
+    end
+
+    context 'when exec on unpatched bundle' do
+      let(:bundle) { 'unpatched_gems_with_default_replacement' }
+
+      it 'should not return empty results' do
         result = subject.patch
 
         expect(result).not_to be_empty

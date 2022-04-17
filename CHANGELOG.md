@@ -1,3 +1,7 @@
+# next
+
+- Include default replacement config for rails family.
+
 # 0.2.1 - 2022-01-30
 
 - Fix bug for 0.2.0 (revert)
