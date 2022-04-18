@@ -1,6 +1,6 @@
-# next
+# 0.3.0 - 2022-04-18
 
-- Include default replacement config for rails family.
+- Include [default replacement config](https://github.com/nobuyo/bundler-audit-fix/blob/main/config/default.yml) for rails family.
 
 # 0.2.1 - 2022-01-30
 
